@@ -1,4 +1,6 @@
 using GenericRadzenComplexModelBlazor.Components;
+using GenericRadzenComplexModelBlazor.Components.Model;
+using Microsoft.EntityFrameworkCore;
 using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +11,10 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddRadzenComponents();
 
+
+builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>
+            options.UseSqlServer(builder.Configuration.GetConnectionString("DataConnectionString"), sqlServerOptions => sqlServerOptions.CommandTimeout(120)),
+            ServiceLifetime.Transient);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
