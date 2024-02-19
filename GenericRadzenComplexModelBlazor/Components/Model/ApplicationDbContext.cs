@@ -14,6 +14,7 @@ namespace GenericRadzenComplexModelBlazor.Components.Model
         public DbSet<CourseAssignment> CourseAssignments { get; set; }
         public DbSet<Instructor> Instructors { get; set; }
         public DbSet<OfficeAssignment> OfficeAssignments { get; set; }
+        public DbSet<Error> Errors { get; set; }
 
 
     }

@@ -38,8 +38,13 @@ namespace GenericRadzenComplexModelBlazor.Components.Repository
             }
             catch (Exception ex)
             {
+                db.Entry(sender).State = EntityState.Detached;
                 errorMessage ="GRESKA: "+ex.Message + " InnerException: " + ex.InnerException.Message;
                 Console.WriteLine(errorMessage);
+                Error error = new Error();
+                error.Message = errorMessage;
+                db.Errors.Add(error);
+                db.SaveChanges();
                 return false;
             }
         }
@@ -55,8 +60,13 @@ namespace GenericRadzenComplexModelBlazor.Components.Repository
             }
             catch (Exception ex)
             {
+                db.Entry(sender).State = EntityState.Detached;
                 errorMessage = ex.Message + " InnerException: " + ex.InnerException.Message;
                 Console.WriteLine(errorMessage);
+                Error error = new Error();
+                error.Message = errorMessage;
+                db.Errors.Add(error);
+                db.SaveChanges();
                 return false;
             }
         }
