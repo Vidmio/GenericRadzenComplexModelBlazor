@@ -1,12 +1,14 @@
 ﻿using GenericRadzenComplexModelBlazor.Components.Repository.Interface;
 using GenericRadzenComplexModelBlazor.Components.Model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 
 namespace GenericRadzenComplexModelBlazor.Components.Repository
 {
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
         private readonly IDbContextFactory<ApplicationDbContext> _context;
+        private string errorMessage;
 
         public GenericRepository(IDbContextFactory<ApplicationDbContext> context)
         {
@@ -34,8 +36,10 @@ namespace GenericRadzenComplexModelBlazor.Components.Repository
                 db.SaveChanges();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                errorMessage ="GRESKA: "+ex.Message + " InnerException: " + ex.InnerException.Message;
+                Console.WriteLine(errorMessage);
                 return false;
             }
         }
@@ -49,8 +53,10 @@ namespace GenericRadzenComplexModelBlazor.Components.Repository
                 db.SaveChanges();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                errorMessage = ex.Message + " InnerException: " + ex.InnerException.Message;
+                Console.WriteLine(errorMessage);
                 return false;
             }
         }

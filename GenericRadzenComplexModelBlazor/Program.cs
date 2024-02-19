@@ -1,5 +1,7 @@
 using GenericRadzenComplexModelBlazor.Components;
 using GenericRadzenComplexModelBlazor.Components.Model;
+using GenericRadzenComplexModelBlazor.Components.Repository.Interface;
+using GenericRadzenComplexModelBlazor.Components.Repository;
 using Microsoft.EntityFrameworkCore;
 using Radzen;
 
@@ -10,7 +12,9 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddRadzenComponents();
-
+builder.Services.AddScoped<IGenericRepository<Student>, GenericRepository<Student>>();
+builder.Services.AddScoped<IGenericRepository<Course>, GenericRepository<Course>>();
+builder.Services.AddScoped<IGenericRepository<Enrollment>, EnrollmentRepository>();//ovo je za GET sa include
 
 builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DataConnectionString"), sqlServerOptions => sqlServerOptions.CommandTimeout(120)),
