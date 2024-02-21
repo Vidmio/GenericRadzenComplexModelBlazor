@@ -1,23 +1,22 @@
-﻿@page "/courses"
+﻿@page "/Instructors"
 @using Repository.Interface
 @using Model
 
 @inject NotificationService NotificationService
 @inject DialogService DialogService
-@inject IGenericRepository<Course> Repository
+@inject IGenericRepository<Instructor> Repository
 
-<RadzenDataGrid Data="@courses" TItem="Course" AllowFiltering="true" FilterMode="FilterMode.Simple" AllowSorting="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive">
+<RadzenDataGrid Data="@instructors" TItem="Instructor" AllowFiltering="true" FilterMode="FilterMode.Simple" AllowSorting="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive">
     <HeaderTemplate>
-        <RadzenText TextStyle="TextStyle.DisplayH4">Courses</RadzenText>
+        <RadzenText TextStyle="TextStyle.DisplayH4">Students</RadzenText>
         <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Button" Text="ADD" Icon="add" class="mb-2" Click="ShowInsertForm" />
-        <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Button" Text="ADD" Icon="add D" class="mb-2" Click="ShowInsertDepartment" />
     </HeaderTemplate>
     <Columns>
-        <RadzenDataGridColumn TItem="Course" Property="ID" Title="ID" Filterable="true" Width="200px" />
-        <RadzenDataGridColumn TItem="Course" Property="Title" Title="Title" Filterable="true" Width="200px" />
-        <RadzenDataGridColumn TItem="Course" Property="Credits" Title="Credits" Filterable="true" Width="200px" />
-        <RadzenDataGridColumn TItem="Course" Property="Department.Name" Title="Department" Filterable="true" Width="200px" />
-        <RadzenDataGridColumn TItem="Course" Width="80px" TextAlign="TextAlign.End" Filterable="false" Sortable="false" Pickable="false">
+        <RadzenDataGridColumn TItem="Instructor" Property="ID" Title="ID" Filterable="true" Width="200px" />
+        <RadzenDataGridColumn TItem="Instructor" Property="LastName" Title="Last Name" Filterable="true" Width="200px" />
+        <RadzenDataGridColumn TItem="Instructor" Property="FirstName" Title="First Name" Filterable="true" Width="200px" />
+        <RadzenDataGridColumn TItem="Instructor" Property="HireDate" Title="Hire Date" Filterable="true" Width="200px" />
+        <RadzenDataGridColumn TItem="Instructor" Width="80px" TextAlign="TextAlign.End" Filterable="false" Sortable="false" Pickable="false">
             <Template Context="context">
                 <RadzenButton ButtonType="ButtonType.Button" ButtonStyle="ButtonStyle.Primary" Icon="edit" Size="ButtonSize.ExtraSmall" Click="@(() => ShowUpdateForm(context))" />
                 <RadzenButton ButtonType="ButtonType.Button" ButtonStyle="ButtonStyle.Secondary" Icon="delete" Size="ButtonSize.ExtraSmall" Click="@(() => Delete(context))" />
@@ -27,18 +26,18 @@
 </RadzenDataGrid>
 
 @code {
-    public List<Course> courses = new List<Course>();
+    public List<Instructor> instructors = new List<Instructor>();
 
     protected override async Task OnInitializedAsync()
     {
         await Refresh();
     }
 
-    public async void ShowUpdateForm(Course course)
+    public async void ShowUpdateForm(Instructor instructor)
     {
         dynamic x = await DialogService.OpenAsync<Form>("Edit", new Dictionary<string, object>()
         {
-            {"Id",course.ID}
+            {"Id",instructor.ID}
         });
         if (x != null && x is bool)
         {
@@ -63,39 +62,23 @@
             if (x)
             {
                 await Refresh();
-                NotificationService.Notify(NotificationSeverity.Success, "Uspešno", "Uspešno sačuvan autor", 3000);
+                NotificationService.Notify(NotificationSeverity.Success, "Uspešno", "Uspešno sačuvan", 3000);
             }
             else
             {
-                NotificationService.Notify(NotificationSeverity.Error, "Greška", "Greška prilikom dodavanja novog autora", 7000);
-            }
-        }
-    }
-
-    public async Task ShowInsertDepartment()
-    {
-        dynamic x = await DialogService.OpenAsync<GenericRadzenComplexModelBlazor.Components.Pages.Departments.Form>("New");
-        if (x != null && x is bool)
-        {
-            if (x)
-            {
-                NotificationService.Notify(NotificationSeverity.Success, "Uspešno", "Uspešno sačuvan autor", 3000);
-            }
-            else
-            {
-                NotificationService.Notify(NotificationSeverity.Error, "Greška", "Greška prilikom dodavanja novog autora", 7000);
+                NotificationService.Notify(NotificationSeverity.Error, "Greška", "Greška prilikom dodavanja novog", 7000);
             }
         }
     }
 
     public async Task Refresh()
     {
-        courses = await Repository.Get();
+        instructors = await Repository.Get();
         StateHasChanged();
     }
 
 
-    protected async Task Delete(Course del)
+    protected async Task Delete(Instructor del)
     {
         var confirmResult = await DialogService.Confirm("Da li ste sigurni?", "Obriši", new ConfirmOptions() { OkButtonText = "Da", CancelButtonText = "Ne" });
 

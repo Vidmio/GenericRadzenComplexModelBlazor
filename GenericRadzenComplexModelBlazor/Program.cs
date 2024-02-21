@@ -13,9 +13,13 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddRadzenComponents();
 builder.Services.AddScoped<IGenericRepository<Student>, GenericRepository<Student>>();
-builder.Services.AddScoped<IGenericRepository<Course>, GenericRepository<Course>>();
+builder.Services.AddScoped<IGenericRepository<Course>, CourseRepository>();
 builder.Services.AddScoped<IGenericRepository<Enrollment>, EnrollmentRepository>();//ovo je za GET sa include
 builder.Services.AddScoped<IGenericRepository<Error>, GenericRepository<Error>>();
+builder.Services.AddScoped<IGenericRepository<Department>, GenericRepository<Department>>();
+builder.Services.AddScoped<IGenericRepository<Instructor>, GenericRepository<Instructor>>();
+builder.Services.AddScoped<IGenericRepository<CourseAssignment>, GenericRepository<CourseAssignment>>();
+
 
 builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>
             options.UseSqlServer(builder.Configuration.GetConnectionString("DataConnectionString"), sqlServerOptions => sqlServerOptions.CommandTimeout(120)),

@@ -3,27 +3,27 @@
 
 @inject NotificationService NotificationService
 @inject DialogService DialogService
-@inject IGenericRepository<Course> Repository
-@inject IGenericRepository<Department> DRepository
+@inject IGenericRepository<Department> Repository
+@inject IGenericRepository<Instructor> IRepository
 
 
-<RadzenTemplateForm TItem="Course" Data="@obj" Submit="SaveForm">
+<RadzenTemplateForm TItem="Department" Data="@obj" Submit="SaveForm">
     <RadzenFieldset Text="Basic data">
         <RadzenRow AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Center" RowGap="1rem">
             <RadzenColumn Size="12">
-                <RadzenFormField Text="Title" Style="width: 100%">
+                <RadzenFormField Text="Name" Style="width: 100%">
                     <ChildContent>
-                        <RadzenTextBox Name="Title" @bind-Value="obj.Title" />
+                        <RadzenTextBox Name="Name" @bind-Value="obj.Name" />
                     </ChildContent>
                     <Helper>
-                        <RadzenLengthValidator Component="Title" Text="predugačako (max 50 karaktera)" Max="50" />
+                        <RadzenLengthValidator Component="Name" Text="predugačako (max 50 karaktera)" Max="50" />
                     </Helper>
                 </RadzenFormField>
             </RadzenColumn>
             <RadzenColumn Size="12">
-                <RadzenFormField Text="Credits" Style="width: 100%">
+                <RadzenFormField Text="Budget" Style="width: 100%">
                     <ChildContent>
-                        <RadzenNumeric Name="Credits" @bind-Value="obj.Credits" />
+                        <RadzenNumeric Name="Budget" @bind-Value="obj.Budget" />
                     </ChildContent>
                     <Helper>
                         <RadzenLengthValidator Component="Credits" Text="predugačako (max 50 karaktera)" Max="50" />
@@ -31,10 +31,9 @@
                 </RadzenFormField>
             </RadzenColumn>
             <RadzenColumn Size="12">
-                <RadzenFormField Text="Department" Style="width: 100%">
+                <RadzenFormField Text="Instructor" Style="width: 100%">
                     <ChildContent>
-                        <RadzenDropDown @bind-Value="obj.DepartmentID" AllowVirtualization="true" AllowClear="true" Data=@department TextProperty="Name" ValueProperty="ID" />
-                        <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Button" Text="ADD" Icon="add" class="mb-2" Click="Close" Style="width: 20%" />
+                        <RadzenDropDown @bind-Value="obj.InstructorID" AllowVirtualization="true" AllowClear="true" Data=@instructor TextProperty="LastName" ValueProperty="ID" />
                     </ChildContent>
                 </RadzenFormField>
             </RadzenColumn>
@@ -56,9 +55,9 @@
 @code {
     [Parameter]
     public int ID { get; set; }
-    public Course obj = new Course();
+    public Department obj = new Department();
 
-    protected IEnumerable<Department> department;
+    protected IEnumerable<Instructor> instructor;
 
     protected override async Task OnInitializedAsync()
     {
@@ -66,7 +65,7 @@
         {
             obj = await Repository.Get(ID);
         }
-        department = await DRepository.Get();
+        instructor = await IRepository.Get();
     }
 
     public void SaveForm()

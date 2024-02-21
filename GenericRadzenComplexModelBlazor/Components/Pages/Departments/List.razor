@@ -1,23 +1,22 @@
-﻿@page "/courses"
+﻿@page "/departments"
 @using Repository.Interface
 @using Model
 
 @inject NotificationService NotificationService
 @inject DialogService DialogService
-@inject IGenericRepository<Course> Repository
+@inject IGenericRepository<Department> Repository
 
-<RadzenDataGrid Data="@courses" TItem="Course" AllowFiltering="true" FilterMode="FilterMode.Simple" AllowSorting="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive">
+<RadzenDataGrid Data="@departments" TItem="Department" AllowFiltering="true" FilterMode="FilterMode.Simple" AllowSorting="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive">
     <HeaderTemplate>
         <RadzenText TextStyle="TextStyle.DisplayH4">Courses</RadzenText>
         <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Button" Text="ADD" Icon="add" class="mb-2" Click="ShowInsertForm" />
-        <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Button" Text="ADD" Icon="add D" class="mb-2" Click="ShowInsertDepartment" />
     </HeaderTemplate>
     <Columns>
-        <RadzenDataGridColumn TItem="Course" Property="ID" Title="ID" Filterable="true" Width="200px" />
-        <RadzenDataGridColumn TItem="Course" Property="Title" Title="Title" Filterable="true" Width="200px" />
-        <RadzenDataGridColumn TItem="Course" Property="Credits" Title="Credits" Filterable="true" Width="200px" />
-        <RadzenDataGridColumn TItem="Course" Property="Department.Name" Title="Department" Filterable="true" Width="200px" />
-        <RadzenDataGridColumn TItem="Course" Width="80px" TextAlign="TextAlign.End" Filterable="false" Sortable="false" Pickable="false">
+        <RadzenDataGridColumn TItem="Department" Property="ID" Title="ID" Filterable="true" Width="200px" />
+        <RadzenDataGridColumn TItem="Department" Property="Name" Title="Name" Filterable="true" Width="200px" />
+        <RadzenDataGridColumn TItem="Department" Property="Budget" Title="Budget" Filterable="true" Width="200px" />
+        <RadzenDataGridColumn TItem="Department" Property="InstructorID" Title="InstructorID" Filterable="true" Width="200px" />
+        <RadzenDataGridColumn TItem="Department" Width="80px" TextAlign="TextAlign.End" Filterable="false" Sortable="false" Pickable="false">
             <Template Context="context">
                 <RadzenButton ButtonType="ButtonType.Button" ButtonStyle="ButtonStyle.Primary" Icon="edit" Size="ButtonSize.ExtraSmall" Click="@(() => ShowUpdateForm(context))" />
                 <RadzenButton ButtonType="ButtonType.Button" ButtonStyle="ButtonStyle.Secondary" Icon="delete" Size="ButtonSize.ExtraSmall" Click="@(() => Delete(context))" />
@@ -27,18 +26,18 @@
 </RadzenDataGrid>
 
 @code {
-    public List<Course> courses = new List<Course>();
+    public List<Department> departments = new List<Department>();
 
     protected override async Task OnInitializedAsync()
     {
         await Refresh();
     }
 
-    public async void ShowUpdateForm(Course course)
+    public async void ShowUpdateForm(Department dpartment)
     {
         dynamic x = await DialogService.OpenAsync<Form>("Edit", new Dictionary<string, object>()
         {
-            {"Id",course.ID}
+            {"Id",dpartment.ID}
         });
         if (x != null && x is bool)
         {
@@ -72,30 +71,15 @@
         }
     }
 
-    public async Task ShowInsertDepartment()
-    {
-        dynamic x = await DialogService.OpenAsync<GenericRadzenComplexModelBlazor.Components.Pages.Departments.Form>("New");
-        if (x != null && x is bool)
-        {
-            if (x)
-            {
-                NotificationService.Notify(NotificationSeverity.Success, "Uspešno", "Uspešno sačuvan autor", 3000);
-            }
-            else
-            {
-                NotificationService.Notify(NotificationSeverity.Error, "Greška", "Greška prilikom dodavanja novog autora", 7000);
-            }
-        }
-    }
 
     public async Task Refresh()
     {
-        courses = await Repository.Get();
+        departments = await Repository.Get();
         StateHasChanged();
     }
 
 
-    protected async Task Delete(Course del)
+    protected async Task Delete(Department del)
     {
         var confirmResult = await DialogService.Confirm("Da li ste sigurni?", "Obriši", new ConfirmOptions() { OkButtonText = "Da", CancelButtonText = "Ne" });
 

@@ -6,14 +6,15 @@
 @inject DialogService DialogService
 @inject IGenericRepository<Error> Repository
 
-<RadzenDataGrid Data="@errors" TItem="Error" AllowFiltering="true" FilterMode="FilterMode.Simple" AllowSorting="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive">
+<RadzenDataGrid Data="@errors" TItem="Error" AllowFiltering="true"  AllowSorting="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive">
     <HeaderTemplate>
-        <RadzenText TextStyle="TextStyle.DisplayH4">Students</RadzenText>
+        <RadzenText TextStyle="TextStyle.DisplayH4">Errors</RadzenText>
     </HeaderTemplate>
     <Columns>
-        <RadzenDataGridColumn TItem="Error" Property="ID" Title="ID" Filterable="true" Width="200px" />
-        <RadzenDataGridColumn TItem="Error" Property="Message" Title="Message" Filterable="true" Width="200px" />
-        <RadzenDataGridColumn TItem="Error" Width="80px" TextAlign="TextAlign.End" Filterable="false" Sortable="false" Pickable="false">
+        <RadzenDataGridColumn TItem="Error" Property="ID" Title="ID"  Width="50px" />
+        <RadzenDataGridColumn TItem="Error" Property="Message" Title="Message" Filterable="true" Width="500px" />
+        <RadzenDataGridColumn TItem="Error" Property="DateTimeStamp" Title="Date Time" Filterable="true" Width="100px" />
+        <RadzenDataGridColumn TItem="Error" Width="30px" TextAlign="TextAlign.End" Filterable="false" Sortable="false" Pickable="false">
             <Template Context="context">
                 <RadzenButton ButtonType="ButtonType.Button" ButtonStyle="ButtonStyle.Secondary" Icon="delete" Size="ButtonSize.ExtraSmall" Click="@(() => Delete(context))" />
             </Template>

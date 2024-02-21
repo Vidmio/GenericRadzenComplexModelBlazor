@@ -43,6 +43,7 @@ namespace GenericRadzenComplexModelBlazor.Components.Repository
                 Console.WriteLine(errorMessage);
                 Error error = new Error();
                 error.Message = errorMessage;
+                error.DateTimeStamp= DateTime.Now;
                 db.Errors.Add(error);
                 db.SaveChanges();
                 return false;
@@ -65,6 +66,7 @@ namespace GenericRadzenComplexModelBlazor.Components.Repository
                 Console.WriteLine(errorMessage);
                 Error error = new Error();
                 error.Message = errorMessage;
+                error.DateTimeStamp = DateTime.Now;
                 db.Errors.Add(error);
                 db.SaveChanges();
                 return false;
